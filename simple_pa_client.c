@@ -8,8 +8,10 @@
 #include <stdbool.h>
 #include <argp.h>
 #include <string.h>
+#include <math.h>
 #include <pulse/simple.h>
 
+#define PI 3.141592653589323
 #define SAMPLE_RATE 48000
 
 void square(short *data, int num_samples, short amplitude) {
@@ -55,16 +57,24 @@ void triangle(short *data, int num_samples, short amplitude) {
 	}
 }
 
+
+void sine(short *data, int num_samples, short amplitude) {
+	for (int i = 0; i < num_samples; ++i) {
+		data[i] = (short) ((sin((2*PI*i)/num_samples) * amplitude));
+	}
+}
+
 struct wave_form {
 	char *name;
 	void (*writer)(short*, int, short);
 };
 
-#define NUM_WAVEFORMS 3
+#define NUM_WAVEFORMS 4
 struct wave_form wave_forms[NUM_WAVEFORMS] = {
 	{"square", square},
 	{"saw", saw},
-	{"tri", triangle}
+	{"tri", triangle},
+	{"sine", sine}
 };
 
 struct wave_form get_wave_form(const char *name) {
