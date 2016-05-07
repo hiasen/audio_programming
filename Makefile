@@ -1,0 +1,2 @@
+CFLAGS=-lpulse-simple -Wall
+
