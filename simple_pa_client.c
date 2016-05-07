@@ -100,6 +100,7 @@ int main(int argc, char *argv[]){
 
 	int num_periods = freq * duration;
 	write_repeat(s, data, 2*num_samples_in_period, num_periods);
+	pa_simple_drain(s, NULL);
 
 	pa_simple_free(s);
 }
