@@ -4,9 +4,13 @@
  * It plays different kinds of wavesforms on a single channel.
  */
 
-#include <stdbool.h>
 #include <argp.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+#include <pulse/error.h>
 #include <pulse/simple.h>
 
 #include "pcm16s.h"
@@ -50,8 +54,12 @@ struct argp my_argp = {.options=my_options, .parser=parser};
 
 
 void write_repeat(pa_simple *s, short *data, int bytes, int repeats) {
+	int error;
 	for (int j = 0; j < repeats; j++){
-		pa_simple_write(s, data, bytes, NULL);
+		if (pa_simple_write(s, data, bytes, &error)) {
+			fprintf(stderr, "pa_simple_write: %s\nbreaking out of write_repeat\n", pa_strerror(error));
+			break;
+		}
 	}
 }
 
@@ -67,7 +75,9 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 
-	pa_simple *s = pa_simple_new(
+	pa_simple *s;
+	int error;
+	s = pa_simple_new(
 		NULL,
 		"Simple pulseaudio client",
 		PA_STREAM_PLAYBACK,
@@ -76,8 +86,12 @@ int main(int argc, char *argv[]){
 		&ss,
 		NULL,
 		NULL,
-		NULL
+		&error
 	);
+	if (s == NULL) {
+		fprintf(stderr, "Error pa_simple_new: %s\n", pa_strerror(error));
+		exit(1);
+	}
 
 	int num_samples_in_period = SAMPLE_RATE / freq;
 	short data[num_samples_in_period];
