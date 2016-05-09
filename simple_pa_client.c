@@ -5,10 +5,7 @@
  */
 
 #include <argp.h>
-#include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <pulse/error.h>
 #include <pulse/simple.h>
@@ -29,10 +26,10 @@ struct wave_form wave_form;
 error_t parser(int key, char *arg, struct argp_state *state) {
 	switch (key) {
 		case 'f':
-			freq = strtol(arg, NULL, 10);
+			freq = (int) strtol(arg, NULL, 10);
 			break;
 		case 'd':
-			duration = strtol(arg, NULL, 10);
+			duration = (int) strtol(arg, NULL, 10);
 			break;
 		case 'w':
 			wave_form = get_wave_form(arg);
@@ -53,7 +50,7 @@ struct argp_option my_options[] = {
 struct argp my_argp = {.options=my_options, .parser=parser};
 
 
-void write_repeat(pa_simple *s, short *data, int bytes, int repeats) {
+void write_repeat(pa_simple *s, short *data, size_t bytes, int repeats) {
 	int error;
 	for (int j = 0; j < repeats; j++){
 		if (pa_simple_write(s, data, bytes, &error)) {
@@ -99,7 +96,7 @@ int main(int argc, char *argv[]){
 	wave_form.writer(data, num_samples_in_period, amplitude);
 
 	int num_periods = freq * duration;
-	write_repeat(s, data, 2*num_samples_in_period, num_periods);
+	write_repeat(s, data, (size_t) 2*num_samples_in_period, num_periods);
 	pa_simple_drain(s, NULL);
 
 	pa_simple_free(s);

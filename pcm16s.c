@@ -13,7 +13,7 @@ void square(short *data, int num_samples, short amplitude) {
 
 void saw(short *data, int num_samples, short amplitude) {
 	short current = 0;
-	short increment = 2*amplitude/num_samples;
+	short increment = (short) (2*amplitude/num_samples);
 	int i = 0;
 	for (; i < num_samples/2; i++) {
 		data[i] = current;
@@ -29,7 +29,7 @@ void saw(short *data, int num_samples, short amplitude) {
 void triangle(short *data, int num_samples, short amplitude) {
 	int i = 0;
 	short current = 0;
-	short increment = 4*amplitude/num_samples;
+	short increment = (short) (4*amplitude/num_samples);
 	for (; i < num_samples/4; i++) {
 		data[i] = current;
 		current += increment;
