@@ -11,7 +11,7 @@ static void stop_playing(pa_stream *s) {
 
 static void write_cb(pa_stream *s, size_t bytes, void *userdata) {
     void *buf;
-    size_t buf_size =  (size_t) bytes;
+    size_t buf_size =  (size_t) -1;
     pa_stream_begin_write(s, &buf, &buf_size);
 
     FILE *file = userdata;
