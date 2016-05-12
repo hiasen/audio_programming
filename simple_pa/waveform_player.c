@@ -10,7 +10,7 @@
 #include <pulse/error.h>
 #include <pulse/simple.h>
 
-#include "pcm16s.h"
+#include "../pcm16s.h"
 #define SAMPLE_RATE 48000
 
 pa_sample_spec ss = {
