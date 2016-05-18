@@ -13,3 +13,4 @@ add_executable(pa_client pa_client.c)
 target_link_libraries(pa_client pulse stdio_playback)
 
 add_subdirectory(simple_pa)
+add_subdirectory(alsa)
