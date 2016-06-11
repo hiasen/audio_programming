@@ -15,3 +15,6 @@ target_link_libraries(rawmidi_write asound)
 
 add_executable(pcm_from_file pcm_from_file.c)
 target_link_libraries(pcm_from_file asound ${GLIB2_LIBRARIES})
+
+add_executable(print_midi_events print_midi_events.c)
+target_link_libraries(print_midi_events asound)

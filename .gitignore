@@ -2,3 +2,4 @@ simple_pa_client
 simple_pa_recorder
 a.out
 *.o
+build
